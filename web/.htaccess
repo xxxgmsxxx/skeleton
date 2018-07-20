@@ -1,0 +1,18 @@
+Options All -Indexes
+Options +FollowSymLinks
+
+AddDefaultCharset utf-8
+
+<ifModule mod_rewrite.c>
+
+RewriteEngine on
+
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^(.+)$ index.php?params=$1 [L,QSA]
+
+</ifModule>
+
+Order Allow,Deny
+ Allow from all
+ Deny from 5.5.5.5
