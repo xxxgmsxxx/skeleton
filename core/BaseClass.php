@@ -24,7 +24,7 @@ class BaseClass
 
         $this->rootPath = realpath($_SERVER['DOCUMENT_ROOT'] . '/../') . DIRECTORY_SEPARATOR;
 
-        $this->db = new Db($this->config['db']);
+        $this->db = new DbPDOMysql($this->config['db']);
 
         $this->helpers = new Helpers();
     }
