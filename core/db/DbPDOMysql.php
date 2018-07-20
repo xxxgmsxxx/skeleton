@@ -1,13 +1,12 @@
 <?php
-namespace core;
+namespace core\db;
 
-
-class Db
+class DbPDOMysql implements Db
 {
     /** @var $_connection \PDO */
-    private $_connection;
+    protected $_connection;
     /** @var $_statement \PDOStatement */
-    private $_statement;
+    protected $_statement;
 
     public function __construct($config)
     {
@@ -79,4 +78,15 @@ class Db
         return ($rs === null) ? 0 : $rs;
     }
 
+    public function lastError()
+    {
+        $info = $this->_statement->errorInfo();
+        if (!is_array($info) || !isset($info[0]) || (int)$info[0] === 0) {
+            return false;
+        }
+
+        $message = '[' . $info[0] . '] ' . (isset($info[2]) && is_string($info[2]) ? $info[2] : 'No message');
+
+        return $message;
+    }
 }
