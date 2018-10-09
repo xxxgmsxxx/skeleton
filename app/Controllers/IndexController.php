@@ -5,6 +5,6 @@ class IndexController extends BaseController
 {
     public function actionIndex()
     {
-        echo 'TEST 111';
+        $this->view->render('index/index');
     }
 }

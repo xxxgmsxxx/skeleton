@@ -51,7 +51,7 @@ class UserStandart extends UserBase implements User
                     $userData['rights'] = [];
                     $userData['isAdmin'] = $userData['is_admin'];
                     $this->setLogIn($userData);
-                    $app->db->exec('UPDATE' . $this::TABLE_AUTH_HASH . ' SET dt = ' . time() . ' WHERE id = :id', ['id' => $cookieData['id']]);
+                    $app->db->exec('UPDATE ' . $this::TABLE_AUTH_HASH . ' SET dt = ' . time() . ' WHERE id = :id', ['id' => $cookieData['id']]);
                 }
             }
         }

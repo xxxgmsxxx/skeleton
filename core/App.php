@@ -3,12 +3,21 @@ namespace core;
 
 use core\routers\Router;
 use core\user\UserStandart;
+use core\db\DbPDOMysql;
+
 
 class App extends BaseClass
 {
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->db = new DbPDOMysql($this->config['db']);
+    }
 
     public function run()
     {
+
         $uri = $_SERVER['REQUEST_URI'];
         if(strpos($uri, '?') !== false)
         {
@@ -38,7 +47,7 @@ class App extends BaseClass
         }
         if(isset($result['controller']) && isset($result['action']))
         {
-            $fileName = __DIR__.'/../app/Controllers/'.$result['controller'].'.php';
+            $fileName = $this->rootPath.'app/Controllers/'.$result['controller'].'.php';
             if(is_file($fileName))
             {
                 require $fileName;
@@ -52,6 +61,17 @@ class App extends BaseClass
                 }
                 catch(\Exception $e)
                 {
+                    $fl = fopen($this->rootPath.'runtime/logs/app.log', 'a');
+                    if ($fl) {
+                        fputs($fl, '['.date('Y-m-d H:i:s').'] '.$e->getMessage()."\n");
+                        fputs($fl, $_SERVER['REQUEST_URI']."\n");
+                        ob_start();
+                        var_dump($_REQUEST);
+                        $txt = ob_get_contents();
+                        ob_end_clean();
+                        fputs($fl, $txt."\n---------------------------------\n");
+                        fclose($fl);
+                    }
                     $this->httpError(404, 'Not Found');
                 }
                 return true;
