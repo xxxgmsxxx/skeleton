@@ -9,7 +9,6 @@ class BaseController
     public function __construct($app)
     {
         $this->app = $app;
-        $this->view = new BaseView();
-        $this->view->basePath = $this->app->rootPath . 'app/Views';
+        $this->view = new BaseView($this->app->rootPath . 'app/Views');
     }
 }
